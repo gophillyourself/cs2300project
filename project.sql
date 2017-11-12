@@ -52,6 +52,11 @@ CREATE TABLE Stock(
 	Av_Quan		int			NOT NULL
 );
 
+#inintializer
+INSERT INTO Stock	(ID, Item, Type, Av_Quan)
+	VALUES			(4, 'Peperoni', 'Topping', 4)
+	VALUES			(5, 'Coke',		'Soda BIB', 2);
+
 CREATE TABLE Order_Products(
 	Phone_Num 	int(10) 	NOT NULL,
 	Order_Num	int			NOT NULL,
