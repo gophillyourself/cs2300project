@@ -54,8 +54,8 @@ CREATE TABLE Stock(
 
 #inintializer
 INSERT INTO Stock	(ID, Item, Type, Av_Quan)
-	VALUES			(4, 'Peperoni', 'Topping', 4)
-	VALUES			(5, 'Coke',		'Soda BIB', 2);
+	VALUES			(4, 'Peperoni', 'Topping', 4),
+					(5, 'Coke',		'SodaBIB', 2);
 
 CREATE TABLE Order_Products(
 	Phone_Num 	int(10) 	NOT NULL,
