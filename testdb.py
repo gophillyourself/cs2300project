@@ -25,6 +25,7 @@ while repeat == 'y':
                 (Phone_num, Name, Amount_Paid) 
                 Values(%s,%s,%s)""",
                 [cust_num, custname, cust_paid])
+                
     cur.execute("select * from Customer")
     for row in cur:
         print row
