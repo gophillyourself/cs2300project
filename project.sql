@@ -16,13 +16,13 @@ CREATE TABLE CustOrder(
 );
 
 CREATE TABLE Customer(
-	Phone_Num 	int(10)		primary key,
+	Phone_Num 	decimal(10)	primary key,
 	Name 		varchar(80)	NOT NULL,
-	Amount_Paid	decimal		NOT NULL
+	Amount_Paid	double		NOT NULL
 );
 
 CREATE TABLE Payment(
-	Phone_Num 	int(10) 	NOT NULL,
+	Phone_Num 	decimal(10) 	NOT NULL,
 	Order_Num	int			NOT NULL,
 	Type 		varchar(4) 	NOT NULL,
 		CHECK(	Type = 'Card' OR
@@ -58,7 +58,7 @@ INSERT INTO Stock	(ID, Item, Type, Av_Quan)
 					(5, 'Coke',		'SodaBIB', 2);
 
 CREATE TABLE Order_Products(
-	Phone_Num 	int(10) 	NOT NULL,
+	Phone_Num 	decimal(10) 	NOT NULL,
 	Order_Num	int			NOT NULL,
 
 	Prod_id		int			NOT NULL,
