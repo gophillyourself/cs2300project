@@ -24,9 +24,7 @@ CREATE TABLE Customer(
 CREATE TABLE Payment(
 	Phone_Num 	decimal(10) 	NOT NULL,
 	Order_Num	int				NOT NULL,
-	Type 		varchar(4) 		NOT NULL,
-		CHECK(	Type = 'Card' OR
-				Type = 'Cash'),
+	Type 		enum('Card', 'Cash'),
 	Amount 		double,
 	Card_Num	int(16), #TODO add condition for int 
 						 #being not allowed null if Type = Cast
@@ -40,12 +38,12 @@ CREATE TABLE Product(
 	Name		varchar(20)	NOT NULL,
 	Type 		varchar(20)	NOT NULL,
 	Base_Cost	double		NOT NULL,
-	Base_Usage	double		NOT NULL,
-	Total		double		NOT NULL
+	Base_Usage	double		NOT NULL
 );
-INSERT into Product
-	Values(	1, 		'Peperoni Pizza', 'Pizza',
-			7.50, 	2,	)
+
+INSERT into Product	(ID, Name, Type, Base_Cost, Base_Usage)
+	Values			(1, 'Pizza', 'Pizza', 7.50, 1),
+					(2, 'Soda',	'Soda',	1.10, .25);
 
 CREATE TABLE Stock(
 	ID			int			primary key,
@@ -63,10 +61,7 @@ CREATE TABLE Order_Products(
 	Phone_Num 	decimal(10) 	NOT NULL,
 	Order_Num	int				NOT NULL,
 	Prod_id		int				NOT NULL,
-	Size		varchar(1)		NOT NULL,
-		CHECK(	SIZE = 'S' OR
-				SIZE = 'M' OR
-				SIZE = 'L'),
+	Size		enum('S', 'M', 'L'),
 	Additions	varchar(20),
 	Add_cost	decimal,
 	PRIMARY KEY(Phone_Num, Order_Num),
