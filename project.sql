@@ -18,7 +18,7 @@ CREATE TABLE CustOrder(
 CREATE TABLE Customer(
 	Phone_Num 	decimal(10)		primary key,
 	Name 		varchar(80)		NOT NULL,
-	Amount_Paid	double			NOT NULL
+	Amount_Paid	double			
 );
 
 CREATE TABLE Payment(
@@ -49,7 +49,7 @@ CREATE TABLE Stock(
 	ID			int			primary key,
 	Item		varchar(20)	NOT NULL,
 	Type		varchar(20)	NOT NULL,
-	Av_Quan		int			NOT NULL
+	Av_Quan		double			NOT NULL
 );
 
 #initializer
@@ -64,10 +64,10 @@ CREATE TABLE Order_Products(
 	Size		enum('S', 'M', 'L'),
 	Additions	varchar(20),
 	Add_cost	decimal,
-	PRIMARY KEY(Phone_Num, Order_Num),
-	FOREIGN KEY(Order_Num) references 	CustOrder(ID),
-	FOREIGN KEY(Phone_Num) references 	Customer(Phone_Num),
-	FOREIGN KEY(Prod_id) 	references	Product(ID)
+	PRIMARY KEY(Phone_Num,	Order_Num),
+	FOREIGN KEY(Order_Num)	references 	CustOrder(ID),
+	FOREIGN KEY(Phone_Num) 	references 	Customer(Phone_Num),
+	FOREIGN KEY(Prod_id)	references	Product(ID)
 );
 
 CREATE TABLE StockInfo(
