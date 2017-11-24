@@ -42,8 +42,9 @@ CREATE TABLE Product(
 );
 
 INSERT into Product	(ID, Name, Type, Base_Cost, Base_Usage)
-	Values			(1, 'Pizza', 'Pizza', 7.50, 1),
-					(2, 'Soda',	'Soda',	1.10, .25);
+	Values	(1, 'Cheese Pizza', 'Pizza', 7.50, 1),
+					(2,	'Pepperoni Pizza', 'Pizza', 8.50, 1),
+					(3, 'Soda',	'Soda',	1.10, .25);
 
 CREATE TABLE Stock(
 	ID			int			primary key,
@@ -54,8 +55,11 @@ CREATE TABLE Stock(
 
 #initializer
 INSERT INTO Stock	(ID, Item, Type, Av_Quan)
-	VALUES			(4, 'Peperoni', 'Topping', 4),
-					(5, 'Coke',		'SodaBIB', 2);
+	VALUES	(1,	'Dough',	'Base',				5),
+					(2,	'Cheese',	'Topping',		6),
+					(3,	'Red',		'Sauce',			7),
+					(4, 'Peperoni', 'Topping',	4),
+					(5, 'Soda',		'SodaBIB', 		2);					
 
 CREATE TABLE Order_Products(
 	Phone_Num 	decimal(10) 	NOT NULL,
@@ -73,8 +77,39 @@ CREATE TABLE Order_Products(
 CREATE TABLE StockInfo(
 	Prod_id		int 		NOT NULL,
 	Stock_id	int			NOT NULL,
-	Base_Usage	decimal		NOT NULL,
+	#Base_Usage	decimal		,
 	FOREIGN KEY(Prod_id)	references Product(ID),
 	FOREIGN KEY(Stock_id) 	references Stock(ID)
 	);
 
+INSERT INTO StockInfo
+					(Prod_id, Stock_id)
+	VALUES	(1, 1), #1 is cheese pizza
+					(1, 2),
+					(1, 3),
+					(2, 1), #2 is pepperoni
+					(2, 2),
+					(2, 3),
+					(2, 4);
+/*CREATE TABLE Ingredients(
+	Prod_ID	int NOT NULL,
+	Seq_Num int NOT NULL,
+	Ingr_ID	int	NOT NULL,
+	Name 		varchar(20) NOT NULL
+	FOREIGN KEY(Prod
+); 
+
+INSERT INTO Ingredients
+	(Prod_id) */
+Update Stock
+Set Av_quan = (Select 
+From (Select a.Base_Usage, b.Prod_id, b.Stock_id 
+			From StockInfo as b, Product as a 
+			Where a.ID = 1 and a.ID = b.Prod_id) 
+e, Stock d
+Where d.ID = e.Stock_id);
+
+Update Stock A 
+Set A.Av_Quan = (Select d.Av_Quan - e.Base_Usage
+From Stock d, Product e 
+where d.ID = e.ID);
