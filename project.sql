@@ -90,7 +90,8 @@ INSERT INTO StockInfo
 					(2, 1), #2 is pepperoni
 					(2, 2),
 					(2, 3),
-					(2, 4);
+					(2, 4),
+					(3, 5);
 /*CREATE TABLE Ingredients(
 	Prod_ID	int NOT NULL,
 	Seq_Num int NOT NULL,
@@ -98,18 +99,3 @@ INSERT INTO StockInfo
 	Name 		varchar(20) NOT NULL
 	FOREIGN KEY(Prod
 ); 
-
-INSERT INTO Ingredients
-	(Prod_id) */
-Update Stock
-Set Av_quan = (Select 
-From (Select a.Base_Usage, b.Prod_id, b.Stock_id 
-			From StockInfo as b, Product as a 
-			Where a.ID = 1 and a.ID = b.Prod_id) 
-e, Stock d
-Where d.ID = e.Stock_id);
-
-Update Stock A 
-Set A.Av_Quan = (Select d.Av_Quan - e.Base_Usage
-From Stock d, Product e 
-where d.ID = e.ID);
