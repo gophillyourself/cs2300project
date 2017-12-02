@@ -31,17 +31,29 @@ def order():
   items = 0
   receipt = []
   while addmore == 'y':
-    printmysqlquery("Select ID, Name, Base_Cost From Product")
+    printmysqlquery("Select ID, Name From Product")
     id = input('Select Product via ID Number : ')
     mysqlquery  ("""
           Select Base_Cost, Name, ID From Product
           WHERE ID = '%s'
           """ %id)
+    
     data = cur.fetchall()
     price = data[0][0]
+    size = raw_input("""
+                    Small   $'%s' (s)
+                    Medium  $'%s' (m)
+                    Large   $'%s' (l)
+                    """%(price, price * 1.25, price * 1.75))
+    if size == 'm':
+      price = price * 1.25
+
+    if size == 'l':
+      price = price * 1.75
+      
     name = data[0][1]
     prod_id = data[0][2]
-    print(name, price)
+    print(name,"$", price)
     total = price + total
     print "Total", total
     addmore = raw_input('Add more? (y,n)')
@@ -83,7 +95,37 @@ def order():
                 Where Stock.ID = '%s'
                 """%(stock[j][1], stock[j][0]))
     
+def addprod():
+  repeat = 'y'
+  while repeat == 'y':
+    new_prod = raw_input("Name of New Product ")
+    prod_type = raw_input("Type of Product ")
+    prod_cost = input("Base Cost of New Product ")
+    prod_usage = input("Base Usage of Stock Unit ")
+
+    mysqlquery("""
+              Select Max(ID) from Product 
+              """)
+    data = cur.fetchone()
+    prod_id = data[0] + 1
+    print(prod_id)
+    mysqlquery("""
+              Insert into Product(ID, Name, Type, Base_Cost, Base_Usage)
+              Values('%s','%s','%s','%s','%s')
+              """%(prod_id, new_prod, prod_type, prod_cost, prod_usage))
+    repeat = raw_input("Enter Another Product? (y/n)")
     
+def addingredients(prod_id = None): 
+  ing_list = []
+  if prod_id == None:
+    printmysqlquery("""
+                    Select a.ID, a.Name, b.ID, b.Item, b.Av_Quan,  
+                    From Product a, Stock b, StockInfo c  
+                    Where a.ID = c.Prod_id AND c.Stock_id = b.ID;
+                    """)
+    
+  
+
 def stockedit():
   choice = -1
   while choice != 0:
@@ -137,8 +179,9 @@ while choice != 0:
   print("""
     1. Order
     2. Edit Stock
-    3. MySQL Query
-    4. Commit
+    3. Add Product
+    4. MySQL Query
+    5. Commit
     0. Exit
     """)
   choice = input()
@@ -147,6 +190,8 @@ while choice != 0:
     order()
   if choice == 2:
     stockedit()
+  if choice == 3:
+    addprod()
   if choice == 3:
     query = input("mysql>")
     mysqlquery(query)
