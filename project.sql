@@ -5,14 +5,15 @@ drop database project;
 CREATE DATABASE project;
 
 use project;
+#TODO Relate CustOrder to Order_products
 
 CREATE TABLE CustOrder(
-	ID 			int(10) 	primary key,
-	Total 		double 		NOT NULL,
-	Tax			double 		NOT NULL,
+	ID 					int(10) 	primary key,
+	Total 			double 		NOT NULL,
+	Tax					double 		NOT NULL,
 	Order_Cost 	double 		NOT NULL,
-	Order_time	time 		NOT NULL,
-	Owed		double 		NOT NULL
+	Order_time	time 			NOT NULL,
+	Owed				double 		NOT NULL
 );
 
 CREATE TABLE Customer(

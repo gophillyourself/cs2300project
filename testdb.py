@@ -1,4 +1,5 @@
 import MySQLdb
+from collections import deque
 
 db = MySQLdb.connect(host="localhost",
            user="root",         # your username
@@ -56,12 +57,17 @@ def order():
     print(name,"$", price)
     total = price + total
     print "Total", total
-    addmore = raw_input('Add more? (y,n)')
+    addmore = raw_input('Add more? (y,n,(r)emove an item')      
     receipt.append([])
     receipt[items].append(name)
     receipt[items].append(float(price))
     receipt[items].append(int(prod_id))
     items = items + 1
+    if addmore == 'r':
+        print("Item ID to Remove")
+        i = 0
+        for info in receipt:
+          print(i, info)
   receipt.append("Total : " + str(total))
   print(receipt)
   custnum = input("Enter Customer Number : ")
