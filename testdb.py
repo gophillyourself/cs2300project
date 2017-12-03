@@ -82,7 +82,35 @@ def order():
   else:
     cust_name = cur.fetchall()[0]
     print(cust_name)
-    
+  # mysqlquery("""
+  #           Select MAX(Order_Num)
+  #           """)
+  '''Payment Info'''
+  pay = 0
+  while pay != 1 and pay != 2:
+    pay = input("""
+              1. Cash
+              2. Card
+              """)
+  if pay == 1:
+    cash = 0
+    while cash < total:
+      cash = input("""
+                  Paid $
+                  """)
+    print("Change Owed $",(cash - total))
+    mysqlquery("""
+              Update CashInDrawer
+              set Cash = '%s'
+              """%(cash - total))
+  if pay == 2:
+    card_num = '0'
+    while len(card_num) != 16:
+      card_num = raw_input("Card Number")
+    mysqlquery("""
+              Insert 
+              """)
+
   ''' Updates Stock '''
   for i in range(0,items):
     mysqlquery("""
@@ -100,6 +128,7 @@ def order():
                 set Av_Quan = '%s'
                 Where Stock.ID = '%s'
                 """%(stock[j][1], stock[j][0]))
+  db.commit()
     
 def addprod():
   repeat = 'y'

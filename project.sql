@@ -9,12 +9,13 @@ use project;
 
 CREATE TABLE CustOrder(
 	ID 					int(10) 							primary key,
-	Order_Num		int Default 1 				primary key,
+	Order_Num		int Default 1 				Not NULL ,
 	Total 			double 								NOT NULL,
 	Tax					double 								NOT NULL,
 	Order_Cost 	double 								NOT NULL,
 	Order_time	time 									NOT NULL,
-	Order_date	date 									NOT NULL
+	Order_date	date 									NOT NULL,
+	unique key(Order_Num)
 );
 
 CREATE TABLE Customer(
@@ -25,10 +26,10 @@ CREATE TABLE Customer(
 
 CREATE TABLE Payment(
 	Phone_Num 	decimal(10) 	NOT NULL,
-	Order_Num	int				NOT NULL,
+	Order_Num		int				NOT NULL,
 	Type 		enum('Card', 'Cash'),
 	Amount 		double,
-	Card_Num	int(16), #TODO add condition for int 
+	Card_Num	varchar(16), #TODO add condition for int 
 						 #being not allowed null if Type = Cast
 	PRIMARY KEY(Phone_Num, Order_Num),
 	FOREIGN KEY(Order_Num) references CustOrder(ID),
@@ -46,7 +47,7 @@ CREATE TABLE Product(
 INSERT into Product	(ID, Name, Type, Base_Cost, Base_Usage)
 	Values	(1, 'Cheese Pizza', 'Pizza', 7.50, 1),
 					(2,	'Pepperoni Pizza', 'Pizza', 8.50, 1),
-					(3,	'Sausage Pizza',	'Pizza',	8.50,	1)
+					(3,	'Sausage Pizza',	'Pizza',	8.50,	1),
 					(4, 'Soda',	'Soda',	1.10, .25);
 
 CREATE TABLE Stock(
@@ -68,7 +69,7 @@ INSERT INTO Stock	(ID, Item, Type, Av_Quan)
 
 CREATE TABLE Order_Products(
 	Phone_Num 	decimal(10) 	NOT NULL,
-	Order_Num	int				NOT NULL,
+	Order_Num	int	default 1			NOT NULL,
 	Prod_id		int				NOT NULL,
 	Size			enum('S', 'M', 'L'),
 	Prod_cost double		NOT NULL,
@@ -101,6 +102,12 @@ INSERT INTO StockInfo
 					(3, 3),
 					(3, 7),
 					(4, 5);
+CREATE TABLE CashInDrawer(
+	Cash	double NOT NULL
+);
+
+Insert Into CashInDrawer(Cash)
+	Values(125.00);
 /*CREATE TABLE Ingredients(
 	Prod_ID	int NOT NULL,
 	Seq_Num int NOT NULL,
