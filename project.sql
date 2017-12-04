@@ -5,16 +5,15 @@ drop database project;
 CREATE DATABASE project;
 
 use project;
-#TODO Relate CustOrder to Order_products
+
 
 CREATE TABLE CustOrder(
-	ID 					int(10) 							primary key,
-	Order_Num		int Default 1 				Not NULL ,
+	ID 					decimal(10)								Not NULL,
+	Order_Num		int Default 1 				Primary Key ,
 	Total 			double 								NOT NULL,
 	Tax					double 								NOT NULL,
 	Order_Cost 	double 								NOT NULL,
 	Order_time	time 									NOT NULL,
-	Order_date	date 									NOT NULL,
 	unique key(Order_Num)
 );
 
@@ -28,11 +27,8 @@ CREATE TABLE Payment(
 	Phone_Num 	decimal(10) 	NOT NULL,
 	Order_Num		int				NOT NULL,
 	Type 		enum('Card', 'Cash'),
-	Amount 		double,
-	Card_Num	varchar(16), #TODO add condition for int 
-						 #being not allowed null if Type = Cast
+	Card_Num	varchar(20), 
 	PRIMARY KEY(Phone_Num, Order_Num),
-	FOREIGN KEY(Order_Num) references CustOrder(ID),
 	FOREIGN KEY(Phone_Num) references Customer(Phone_Num)
 );
 
@@ -68,14 +64,13 @@ INSERT INTO Stock	(ID, Item, Type, Av_Quan)
 					(7, 'Sausage','Topping',		10);
 
 CREATE TABLE Order_Products(
-	Phone_Num 	decimal(10) 	NOT NULL,
+	Cust_Num 	decimal(10) 	NOT NULL,
 	Order_Num	int	default 1			NOT NULL,
 	Prod_id		int				NOT NULL,
-	Size			enum('S', 'M', 'L'),
 	Prod_cost double		NOT NULL,
-	PRIMARY KEY(Phone_Num,	Order_Num),
-	FOREIGN KEY(Order_Num)	references 	CustOrder(ID),
-	FOREIGN KEY(Phone_Num) 	references 	Customer(Phone_Num),
+	PRIMARY KEY(Cust_Num,	Order_Num),
+	FOREIGN KEY(Order_Num)	references 	CustOrder(Order_Num),
+	FOREIGN KEY(Cust_Num) 	references 	Customer(Phone_Num),
 	FOREIGN KEY(Prod_id)		references	Product(ID),
 	FOREIGN KEY(Order_Num)	references	CustOrder(Order_Num)
 );

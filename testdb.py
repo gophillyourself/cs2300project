@@ -1,4 +1,5 @@
 import MySQLdb
+import datetime
 from collections import deque
 
 db = MySQLdb.connect(host="localhost",
@@ -56,6 +57,8 @@ def order():
     prod_id = data[0][2]
     print(name,"$", price)
     total = price + total
+    pretotal = total
+    total = total + total * .26
     print "Total", total
     addmore = raw_input('Add more? (y,n,(r)emove an item')      
     receipt.append([])
@@ -92,6 +95,16 @@ def order():
               1. Cash
               2. Card
               """)
+
+  mysqlquery("""
+            Select Max(Order_Num)
+            from CustOrder
+            """)
+  ordernum = cur.fetchall()[0][0]
+  if ordernum == None:
+    ordernum = 1
+  ordernum = ordernum + 1
+  print(ordernum)
   if pay == 1:
     cash = 0
     while cash < total:
@@ -103,14 +116,38 @@ def order():
               Update CashInDrawer
               set Cash = '%s'
               """%(cash - total))
+    mysqlquery("""
+              Insert into Payment
+              (Phone_Num, Order_Num, Type)
+              Values('%s','%s','Cash')
+              """%(custnum, ordernum))
   if pay == 2:
     card_num = '0'
     while len(card_num) != 16:
       card_num = raw_input("Card Number")
-    mysqlquery("""
-              Insert 
-              """)
+      mysqlquery("""
+                Insert into Payment
+                (Phone_Num, Order_Num, Type, Card_Num)
+                Values('%s','%s','Card', '%s')
+                """%(custnum, ordernum, card_num))
 
+  mysqlquery("""    
+            Insert into CustOrder(
+            ID, Order_Num, Total, Tax, 
+            Order_Cost, Order_time
+            )
+            Values('%s','%s','%s','%s','%s',NOW())
+            """
+            %(custnum, ordernum, total, (total - pretotal),
+            pretotal))
+  print(custnum)
+  for i in range(0, items):
+      mysqlquery("""
+                Insert into Order_Products(
+                Cust_Num, Order_Num, Prod_id, Prod_cost)
+                Values('%s', '%s', '%s' ,'%s')
+                """
+                %(custnum, ordernum, receipt[i][2], receipt[i][1]))
   ''' Updates Stock '''
   for i in range(0,items):
     mysqlquery("""
@@ -128,6 +165,7 @@ def order():
                 set Av_Quan = '%s'
                 Where Stock.ID = '%s'
                 """%(stock[j][1], stock[j][0]))
+  
   db.commit()
     
 def addprod():

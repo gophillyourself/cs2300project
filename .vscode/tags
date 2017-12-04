@@ -4,19 +4,19 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
-addingredients	../testdb.py	/^def addingredients(prod_id = None): $/;"	kind:function	line:118
-addprod	../testdb.py	/^def addprod():$/;"	kind:function	line:98
-choice	../testdb.py	/^  choice = input()$/;"	kind:variable	line:187
-choice	../testdb.py	/^choice = -1$/;"	kind:variable	line:177
-cur	../testdb.py	/^cur = db.cursor()$/;"	kind:variable	line:7
-db	../testdb.py	/^           db="project")        # name of the data base$/;"	kind:variable	line:6
-db	../testdb.py	/^db = MySQLdb.connect(host="localhost",$/;"	kind:variable	line:3
-mysqlquery	../testdb.py	/^def mysqlquery(query):$/;"	kind:function	line:11
-newcust	../testdb.py	/^def newcust():$/;"	kind:function	line:19
-order	../testdb.py	/^def order():$/;"	kind:function	line:28
-passwd	../testdb.py	/^           passwd="password",  # your password$/;"	kind:variable	line:5
-printmysqlquery	../testdb.py	/^def printmysqlquery(query):$/;"	kind:function	line:14
-query	../testdb.py	/^    query = input("mysql>")$/;"	kind:variable	line:196
-stockedit	../testdb.py	/^def stockedit():$/;"	kind:function	line:129
+addingredients	../testdb.py	/^def addingredients(prod_id = None): $/;"	kind:function	line:153
+addprod	../testdb.py	/^def addprod():$/;"	kind:function	line:133
+choice	../testdb.py	/^  choice = input()$/;"	kind:variable	line:222
+choice	../testdb.py	/^choice = -1$/;"	kind:variable	line:212
+cur	../testdb.py	/^cur = db.cursor()$/;"	kind:variable	line:8
+db	../testdb.py	/^           db="project")        # name of the data base$/;"	kind:variable	line:7
+db	../testdb.py	/^db = MySQLdb.connect(host="localhost",$/;"	kind:variable	line:4
+mysqlquery	../testdb.py	/^def mysqlquery(query):$/;"	kind:function	line:12
+newcust	../testdb.py	/^def newcust():$/;"	kind:function	line:20
+order	../testdb.py	/^def order():$/;"	kind:function	line:29
+passwd	../testdb.py	/^           passwd="password",  # your password$/;"	kind:variable	line:6
+printmysqlquery	../testdb.py	/^def printmysqlquery(query):$/;"	kind:function	line:15
+query	../testdb.py	/^    query = input("mysql>")$/;"	kind:variable	line:231
+stockedit	../testdb.py	/^def stockedit():$/;"	kind:function	line:164
 testdb.py	../testdb.py	1;"	kind:file	line:1
-user	../testdb.py	/^           user="root",         # your username$/;"	kind:variable	line:4
+user	../testdb.py	/^           user="root",         # your username$/;"	kind:variable	line:5
