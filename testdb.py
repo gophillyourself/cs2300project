@@ -250,6 +250,7 @@ def stockedit():
   
 #END FUNCTION DEFINITIONS 
 choice = -1
+print("-----Phill and Devinda's Pizza Thing-----")
 while choice != 0:
   print("""
     1. Order
