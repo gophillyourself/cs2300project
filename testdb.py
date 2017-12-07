@@ -289,6 +289,7 @@ print("""
 ---Pizza Management System---
 ------------v1.0-------------
 """)
+mysqlquery("Update CashInDrawer set Cash = 125")
 while choice != 0:
   print("""
     1. Order
