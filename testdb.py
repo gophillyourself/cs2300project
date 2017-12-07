@@ -204,31 +204,39 @@ def addprod():
     prod_cost = input("Base Cost of New Product ")
     prod_usage = input("Base Usage of Stock Unit ")
 
+    printmysqlquery("""
+              Select Max(ID) from Product 
+              """)
     mysqlquery("""
               Select Max(ID) from Product 
               """)
     data = cur.fetchone()
-    prod_id = data[0] + 2
+    prod_id = data[0] + 1
     print(prod_id)
     mysqlquery("""
               Insert into Product(ID, Name, Type, Base_Cost, Base_Usage)
               Values('%s','%s','%s','%s','%s')
               """%(prod_id, new_prod, prod_type, prod_cost, prod_usage))
+    printmysqlquery("select * from Product")
+    db.commit()
+    inglist = []
+    printmysqlquery("Select * from Stock")
+    mysqlquery("Select * from Stock")
+    ing = 1
+    while ing != 0:
+      ing = input("Select ingredients to use 0 for done")
+      inglist.append(ing)
+    print(inglist)
+    print(prod_id)
+    for i in range(0, len(inglist)-1):
+      mysqlquery("""
+              Insert into StockInfo(Prod_id, Stock_id)
+              Values('%s', '%s')
+              """%(prod_id,inglist[i]))
     repeat = raw_input("Enter Another Product? (y/n)")
-    
-def addingredients(prod_id = None): 
-  ing_list = []
-  if prod_id == None:
-    printmysqlquery("""
-                    Select a.ID, a.Name, b.ID, b.Item, b.Av_Quan,  
-                    From Product a, Stock b, StockInfo c  
-                    Where a.ID = c.Prod_id AND c.Stock_id = b.ID;
-                    """)
-    
-  
 
-def stockedit():
-  choice = -1
+
+def stockedit(choice = -1):
   while choice != 0:
     print   ("""
     1. View Stock
@@ -303,6 +311,8 @@ while choice != 0:
     printmysqlquery(query)
   if choice == 5:
     db.commit()
+  if choice == 6:
+    addingredients()
   if choice == 0:
     break
 
