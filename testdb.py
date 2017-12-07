@@ -1,7 +1,9 @@
 import MySQLdb
 import datetime
 from collections import deque
+import prettytable
 
+#run SQL SERVER FIRST AND RUN project.sql THEN RUN THIS
 db = MySQLdb.connect(host="localhost",
            user="root",         # your username
            passwd="password",  # your password
@@ -265,10 +267,10 @@ while choice != 0:
     stockedit()
   if choice == 3:
     addprod()
-  if choice == 3:
-    query = input("mysql>")
-    mysqlquery(query)
   if choice == 4:
+    query = raw_input("mysql>")
+    printmysqlquery(query)
+  if choice == 5:
     db.commit()
   if choice == 0:
     break
