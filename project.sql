@@ -68,7 +68,6 @@ CREATE TABLE Order_Products(
 	Order_Num	int	default 1			NOT NULL,
 	Prod_id		int				NOT NULL,
 	Prod_cost double 		NOT NULL,
-	PRIMARY KEY(Cust_Num, Order_Num),
 	FOREIGN KEY(Order_Num)	references 	CustOrder(Order_Num),
 	FOREIGN KEY(Cust_Num) 	references 	Customer(Phone_Num),
 	FOREIGN KEY(Prod_id)		references	Product(ID)
