@@ -1,5 +1,6 @@
 import MySQLdb
 import datetime
+import math
 from collections import deque
 from prettytable import from_db_cursor
 
@@ -9,7 +10,7 @@ db = MySQLdb.connect(host="localhost",
            passwd="password",  # your password
            db="project")        # name of the data base
 cur = db.cursor()
-
+cur.autocommit = True
 # you must create a Cursor object. It will let
 #  you execute all the queries you need
 def mysqlquery(query):
@@ -48,12 +49,13 @@ def order():
                     Small   $'%s' (s)
                     Medium  $'%s' (m)
                     Large   $'%s' (l)
-                    """%(price, price * 1.25, price * 1.75))
+                    """%(price, round(price * 1.25, 2),
+                         round(price * 1.75, 2)))
     if size == 'm':
-      price = price * 1.25
+      price = round(price * 1.25,2)
 
     if size == 'l':
-      price = price * 1.75
+      price = round(price * 1.75,2)
       
     name = data[0][1]
     prod_id = data[0][2]
@@ -90,6 +92,7 @@ def order():
   # mysqlquery("""
   #           Select MAX(Order_Num)
   #           """)
+  db.commit()
   '''Payment Info'''
   pay = 0
   while pay != 1 and pay != 2:
@@ -97,33 +100,46 @@ def order():
               1. Cash
               2. Card
               """)
+  maxordernum  = 1
 
-  mysqlquery("""
-            Select Max(Order_Num)
-            from CustOrder
-            """)
-  ordernum = cur.fetchall()[0][0]
-  if ordernum == None:
-    ordernum = 1
-  ordernum = ordernum + 1
+  printmysqlquery("select * from Payment")
+  mysqlquery("select Max(Order_Num) from Payment")
+  maxordernum = cur.fetchall()[0][0]
+  if not maxordernum:
+    maxordernum = 1
+  else :
+    maxordernum = maxordernum + 1 
+  print(maxordernum)
+  ordernum = maxordernum
   print(ordernum)
+
+
+
   if pay == 1:
     cash = 0
     while cash < total:
       cash = input("""
                   Paid $
                   """)
+    
     print("Change Owed $",(cash - total))
+    
     mysqlquery("""
-              Update CashInDrawer
-              set Cash = '%s'
-              """%(cash - total))
+          Update CashInDrawer
+          set Cash = '%s'
+          """%(cash - total))
+    printmysqlquery("select * from Payment") 
+
     mysqlquery("""
               Insert into Payment
               (Phone_Num, Order_Num, Type)
               Values('%s','%s','Cash')
               """%(custnum, ordernum))
+    printmysqlquery("select * from Payment") 
+
   if pay == 2:
+    printmysqlquery("select * from Payment") 
+    print("Pay with Card")
     card_num = '0'
     while len(card_num) != 16:
       card_num = raw_input("Card Number")
@@ -132,17 +148,24 @@ def order():
                 (Phone_Num, Order_Num, Type, Card_Num)
                 Values('%s','%s','Card', '%s')
                 """%(custnum, ordernum, card_num))
+    printmysqlquery("select * from Payment") 
+
+  db.commit()
+  print("Payment")
 
   mysqlquery("""    
             Insert into CustOrder(
             ID, Order_Num, Total, Tax, 
-            Order_Cost, Order_time
+            Order_Cost
             )
-            Values('%s','%s','%s','%s','%s',NOW())
+            Values('%s','%s','%s','%s','%s')
             """
             %(custnum, ordernum, total, (total - pretotal),
             pretotal))
-  print(custnum)
+  print("Payment")
+  print(receipt)
+  printmysqlquery("select * from Order_Products")
+  print(ordernum)
   for i in range(0, items):
       mysqlquery("""
                 Insert into Order_Products(
@@ -150,6 +173,9 @@ def order():
                 Values('%s', '%s', '%s' ,'%s')
                 """
                 %(custnum, ordernum, receipt[i][2], receipt[i][1]))
+  printmysqlquery("select * from Order_Products")
+
+  db.commit()
   ''' Updates Stock '''
   for i in range(0,items):
     mysqlquery("""
@@ -182,7 +208,7 @@ def addprod():
               Select Max(ID) from Product 
               """)
     data = cur.fetchone()
-    prod_id = data[0] + 1
+    prod_id = data[0] + 2
     print(prod_id)
     mysqlquery("""
               Insert into Product(ID, Name, Type, Base_Cost, Base_Usage)
@@ -250,7 +276,11 @@ def stockedit():
   
 #END FUNCTION DEFINITIONS 
 choice = -1
-print("-----Phill and Devinda's Pizza Thing-----")
+print("""
+-----Phill and Devinda's-----
+---Pizza Management System---
+------------v1.0-------------
+""")
 while choice != 0:
   print("""
     1. Order

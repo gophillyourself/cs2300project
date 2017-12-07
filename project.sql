@@ -13,7 +13,7 @@ CREATE TABLE CustOrder(
 	Total 			double 								NOT NULL,
 	Tax					double 								NOT NULL,
 	Order_Cost 	double 								NOT NULL,
-	Order_time	time 									NOT NULL,
+	Order_time	time,
 	unique key(Order_Num)
 );
 
@@ -28,7 +28,7 @@ CREATE TABLE Payment(
 	Order_Num		int				NOT NULL,
 	Type 		enum('Card', 'Cash'),
 	Card_Num	varchar(20), 
-	PRIMARY KEY(Phone_Num, Order_Num),
+	PRIMARY KEY(Order_Num),
 	FOREIGN KEY(Phone_Num) references Customer(Phone_Num)
 );
 
@@ -67,12 +67,11 @@ CREATE TABLE Order_Products(
 	Cust_Num 	decimal(10) 	NOT NULL,
 	Order_Num	int	default 1			NOT NULL,
 	Prod_id		int				NOT NULL,
-	Prod_cost double		NOT NULL,
-	PRIMARY KEY(Cust_Num,	Order_Num),
+	Prod_cost double 		NOT NULL,
+	PRIMARY KEY(Cust_Num, Order_Num),
 	FOREIGN KEY(Order_Num)	references 	CustOrder(Order_Num),
 	FOREIGN KEY(Cust_Num) 	references 	Customer(Phone_Num),
-	FOREIGN KEY(Prod_id)		references	Product(ID),
-	FOREIGN KEY(Order_Num)	references	CustOrder(Order_Num)
+	FOREIGN KEY(Prod_id)		references	Product(ID)
 );
 
 CREATE TABLE StockInfo(
