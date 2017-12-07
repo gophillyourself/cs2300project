@@ -1,7 +1,7 @@
 import MySQLdb
 import datetime
 from collections import deque
-import prettytable
+from prettytable import from_db_cursor
 
 #run SQL SERVER FIRST AND RUN project.sql THEN RUN THIS
 db = MySQLdb.connect(host="localhost",
@@ -17,8 +17,8 @@ def mysqlquery(query):
 
 def printmysqlquery(query):
   cur.execute(query)
-  for info in cur:
-    print info
+  table = from_db_cursor(cur)
+  print(table)
 
 def newcust():
   custname = raw_input('Cust Name:')
