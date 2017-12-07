@@ -109,9 +109,7 @@ def order():
     maxordernum = 1
   else :
     maxordernum = maxordernum + 1 
-  print(maxordernum)
   ordernum = maxordernum
-  print(ordernum)
 
 
 
@@ -151,7 +149,6 @@ def order():
     printmysqlquery("select * from Payment") 
 
   db.commit()
-  print("Payment")
 
   mysqlquery("""    
             Insert into CustOrder(
@@ -162,8 +159,6 @@ def order():
             """
             %(custnum, ordernum, total, (total - pretotal),
             pretotal))
-  print("Payment")
-  print(receipt)
   printmysqlquery("select * from Order_Products")
   print(ordernum)
   for i in range(0, items):
